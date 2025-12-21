@@ -98,21 +98,34 @@ When user corrects something in DRAFT content, ONLY change what they specificall
 ### On Session Start
 Your very first action MUST be to create `requirements-session.md`. Do this BEFORE greeting the user.
 
-### Before EVERY Response (After Category 1)
-**MANDATORY**: Before formulating ANY response after Category 1 begins, you MUST:
-1. **Read `requirements-session.md`** from disk
-2. **Confirm** you have the current captured state
-3. **Only then** formulate your response
+### Checkpoint Confirmation (ENFORCED)
+At these key moments, you MUST read the session file AND output a sync confirmation:
 
-This is NON-NEGOTIABLE. Your memory of the conversation is unreliable; the session record is truth.
+**When to confirm:**
+1. Before starting each new category (Categories 2-5)
+2. Before generating the final PRD
+3. When user returns after saying they'll "be back" or after a long pause
 
-**VIOLATION**: Responding to any message in Category 2+ without first reading the session record.
+**Confirmation format (output this visibly):**
+```
+📋 **Session Sync** (Category X)
+- Operator: [name from file]
+- Completed: [list categories done]
+- Current: [current category]
+```
+
+This proves you read the file. Without this confirmation at checkpoints, you may be working from degraded memory.
+
+### Between Checkpoints
+- Still read the session file before responding when possible
+- Always append Q&A to the file after each answer
+- Trust the file over your memory if they conflict
 
 ### Why This Matters
 - Long conversations cause context drift
 - You may "remember" things differently than they were captured
-- The session record contains the verified, agreed-upon information
-- Always trust the session record over your conversation memory
+- The checkpoint confirmation PROVES you synced with the file
+- Users can see you're staying aligned with captured information
 
 ## Core Principles
 
@@ -407,7 +420,7 @@ After completing all questions in a category, you MUST follow this exact sequenc
 
 2. **Summarize verbally** what you captured (including suggestions you made that user confirmed)
 
-3. **Write DRAFT to notes**: Write this category's information to `requirements-session.md` with status "DRAFT - Awaiting User Verification"
+3. **Write to session record**: Write this category's information to `requirements-session.md` with status "DRAFT - Awaiting User Verification"
 
 4. **Read back to user for verification**:
    "I've written this to my notes. Let me read it back to you:
@@ -428,9 +441,17 @@ After completing all questions in a category, you MUST follow this exact sequenc
 
 6. **Lock the category**: Once VERIFIED, this content is now locked (append-only from this point)
 
-7. **Announce next category**: "Moving to Category [N+1]: [Category Name]"
+7. **Checkpoint Confirmation**: Before starting the new category, read `requirements-session.md` and output:
+   ```
+   📋 **Session Sync** (Category [N+1])
+   - Operator: [name from file]
+   - Completed: Categories 1-[N]
+   - Current: Category [N+1]: [Name]
+   ```
 
-8. **Ask first question** from the new category
+8. **Announce next category**: "Moving to Category [N+1]: [Category Name]"
+
+9. **Ask first question** from the new category
 
 Example:
 ```
@@ -464,6 +485,11 @@ Is this accurate, or should I correct anything?"
 User: "Yes, that's correct"
 
 Agent: "Perfect! Marking Category 3 as VERIFIED and locked.
+
+📋 **Session Sync** (Category 4)
+- Operator: config-sync-operator
+- Completed: Categories 1-3
+- Current: Category 4: Operator Responsibilities
 
 Moving to Category 4: Operator Responsibilities (High-Level)
 
@@ -592,8 +618,14 @@ Before I generate the PRD, let me give you a final chance to review what's in my
 
 **PRD Generation Process**:
 1. **Wait for user confirmation** to proceed (or read back categories if requested)
-2. **READ the entire `requirements-session.md` file** - this contains accurate verified information from the interview
-3. **Generate `operator-prd.md`** using the notes as your source (NOT your memory of the conversation)
+2. **Final Checkpoint Confirmation**: Read `requirements-session.md` and output:
+   ```
+   📋 **Final Session Sync** (PRD Generation)
+   - Operator: [name from file]
+   - All 5 categories: VERIFIED
+   - Ready to generate PRD from session record
+   ```
+3. **Generate `operator-prd.md`** using the session record as your source (NOT your memory of the conversation)
    - Use the verified content from each category
    - Include additions and corrections in the appropriate sections
    - Follow the exact PRD template structure below
