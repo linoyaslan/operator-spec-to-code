@@ -3,6 +3,7 @@
 .idea/
 
 # Agent session records (temporary working files)
+session-transcript.md
 requirements-session.md
 design-session.md
 implementation-tracker.md
