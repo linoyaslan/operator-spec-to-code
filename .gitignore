@@ -1,0 +1,9 @@
+
+# JetBrains IDEs
+.idea/
+
+# Agent session records (temporary working files)
+requirements-session.md
+design-session.md
+implementation-tracker.md
+validation-session.md
