@@ -22,13 +22,7 @@ At these key moments, you MUST read the spec files AND output a sync confirmatio
 3. After completing a major implementation step
 4. When user returns after a pause
 
-**Confirmation format (output this visibly):**
-```
-📋 **Implementation Sync**
-- Spec: [spec file name]
-- Implementing: [current component]
-- Progress: [X/Y steps complete]
-```
+**Confirmation format**: Invoke the `checkpoint-sync` skill (it will auto-detect implementation-tracker.md and output sync confirmation)
 
 ### Implementation Tracker
 Maintain an `implementation-tracker.md` file to track progress:
@@ -48,6 +42,8 @@ Maintain an `implementation-tracker.md` file to track progress:
 ```
 
 Update this tracker after completing each implementation step.
+
+**Tip**: You can invoke the `validate-session-file` skill anytime to verify the tracker file structure (it will auto-detect implementation-tracker.md)
 
 ### Why This Matters
 - Complex specs are easily misremembered
@@ -116,7 +112,9 @@ fi
 
 **When given a CR specification like `cr-DPFHCPBridge.md`:**
 
-1. **Read the CR spec** and extract API structure information:
+1. **Checkpoint Confirmation**: Invoke the `checkpoint-sync` skill (it will auto-detect implementation-tracker.md and output sync confirmation showing current progress)
+
+2. **Read the CR spec** and extract API structure information:
 
    **Look for the "API Structure" section** in the spec which should contain:
    - **Kind** (e.g., `DPFHCPBridge`)
@@ -130,7 +128,7 @@ fi
    - "What is the API Version?" (e.g., `v1alpha1`)
    - "What is the Kind?" (e.g., `DPFHCPBridge`)
 
-2. **Run operator-sdk create api:**
+3. **Run operator-sdk create api:**
    ```bash
    operator-sdk create api \
      --group=<group-from-spec-or-user> \
@@ -140,18 +138,18 @@ fi
      --controller=true
    ```
 
-3. **Implement CR types** in `api/<version>/<kind-lower>_types.go`:
+4. **Implement CR types** in `api/<version>/<kind-lower>_types.go`:
    - Implement **Spec fields** exactly as defined in the "Spec Fields" section
    - Implement **Status fields** exactly as defined in the "Status Fields" section
    - Add **kubebuilder markers** for validation, default values, and printing columns
    - Add comprehensive comments explaining each field
 
-4. **Generate manifests and code:**
+5. **Generate manifests and code:**
    ```bash
    make manifests generate
    ```
 
-5. **Verify the build:**
+6. **Verify the build:**
    ```bash
    make build
    ```
@@ -162,16 +160,18 @@ fi
 
 **When given a feature specification like `feature-dpucluster-validation.md`:**
 
-1. **Read context files:**
+1. **Checkpoint Confirmation**: Invoke the `checkpoint-sync` skill (it will auto-detect implementation-tracker.md and output sync confirmation showing current progress)
+
+2. **Read context files:**
    - `operator-prd.md` (if provided) - High-level operator purpose
    - `feature-*.md` - Detailed implementation requirements
 
-2. **Understand the feature scope** from the spec:
+3. **Understand the feature scope** from the spec:
    - What does this feature do?
    - Where does the code go? (existing controller, new controller, webhook, helper package)
    - What resources does it interact with?
 
-3. **Implement the feature** based on the spec's guidance:
+4. **Implement the feature** based on the spec's guidance:
 
    **For CR Controller Features** (adds logic to existing controller):
    - Modify `internal/controller/<cr>_controller.go`
@@ -197,28 +197,28 @@ fi
    - Create worker package in `internal/worker/`
    - Start goroutines in `cmd/main.go`
 
-4. **Implement error handling** following the "Error Handling" section:
+5. **Implement error handling** following the "Error Handling" section:
    - Distinguish validation, transient, and permanent errors
    - Set appropriate status conditions
    - Emit events
    - Implement retry/requeue logic
 
-5. **Implement RBAC** following the "RBAC Permissions" section:
+6. **Implement RBAC** following the "RBAC Permissions" section:
    - Add kubebuilder RBAC markers to controller files
    - Or update YAML files in `config/rbac/`
 
-6. **Implement observability**:
+7. **Implement observability**:
    - Add structured logging (Info, Debug, Error levels)
    - Add metrics (counters, histograms) in `internal/metrics/`
    - Emit Kubernetes events
 
-7. **Write comprehensive tests** following the "Testing Strategy" section:
+8. **Write comprehensive tests** following the "Testing Strategy" section:
    - **Unit tests**: `internal/controller/*_test.go` or `internal/<package>/*_test.go`
    - **Integration tests**: `test/integration/<feature>_test.go` using envtest
    - **E2E tests**: `test/e2e/<feature>_test.go` for real cluster
    - Cover all test cases specified in the spec
 
-8. **Generate manifests and verify:**
+9. **Generate manifests and verify:**
    ```bash
    make manifests generate
    make test

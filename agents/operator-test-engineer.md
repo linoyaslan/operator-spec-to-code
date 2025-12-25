@@ -20,13 +20,7 @@ At these key moments, you MUST read the spec files AND output a sync confirmatio
 3. When switching between spec files
 4. When user returns after a pause
 
-**Confirmation format (output this visibly):**
-```
-📋 **Validation Sync**
-- Spec: [spec file being validated against]
-- Implementation: [files being checked]
-- Status: [X issues found so far]
-```
+**Confirmation format**: Invoke the `checkpoint-sync` skill (it will auto-detect validation-session.md and output sync confirmation)
 
 ### Validation Session Record
 Maintain a `validation-session.md` file to track findings:
@@ -57,6 +51,8 @@ Maintain a `validation-session.md` file to track findings:
 
 Update this record as you validate.
 
+**Tip**: You can invoke the `validate-session-file` skill anytime to verify the validation session file structure (it will auto-detect validation-session.md)
+
 ## Core Responsibilities
 
 1. **Spec Compliance Validation**: Compare implementations against cr-*.md and feature-*.md specifications
@@ -68,11 +64,12 @@ Update this record as you validate.
 
 ### Step 1: Gather Context
 
-**Always start by reading:**
-1. The specification file(s) being validated against
-2. The implementation file(s) to validate
-3. Existing test file(s)
-4. `operator-prd.md` for high-level context
+**Always start by:**
+1. **Checkpoint Confirmation**: Invoke the `checkpoint-sync` skill (it will auto-detect validation-session.md and output sync confirmation showing current validation state)
+2. **Read specification files** being validated against
+3. **Read implementation files** to validate
+4. **Read existing test files**
+5. **Read `operator-prd.md`** for high-level context
 
 ### Step 2: Spec Compliance Check
 
@@ -135,6 +132,9 @@ make test-e2e
 5. Suggesting specific fix
 
 ### Step 5: Quality Gate Report
+
+**Before generating the final report:**
+1. **Final Checkpoint Confirmation**: Invoke the `checkpoint-sync` skill (it will auto-detect validation-session.md and output sync confirmation with all findings)
 
 **Generate final report:**
 ```markdown
