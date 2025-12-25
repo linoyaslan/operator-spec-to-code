@@ -1,0 +1,10 @@
+{
+  "plugins": [
+    {
+      "name": "operator-spec-to-code",
+      "description": "Spec-driven development workflow for building Kubernetes operators from requirements to implementation",
+      "source": "https://github.com/linoyaslan/operator-spec-to-code.git",
+      "version": "1.0.0"
+    }
+  ]
+}
