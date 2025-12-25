@@ -1,10 +1,18 @@
 {
+  "name": "operator-spec-to-code",
+  "description": "Marketplace for Kubernetes operator development agents and tools",
+  "owner": {
+    "name": "Linoy Hadad"
+  },
   "plugins": [
     {
       "name": "operator-spec-to-code",
+      "source": "./",
       "description": "Spec-driven development workflow for building Kubernetes operators from requirements to implementation",
-      "source": "https://github.com/linoyaslan/operator-spec-to-code.git",
-      "version": "1.0.0"
+      "version": "1.0.0",
+      "author": {
+        "name": "Linoy Hadad"
+      }
     }
   ]
 }
